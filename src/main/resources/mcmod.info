@@ -1,0 +1,16 @@
+[
+{
+  "modid": "boardgames",
+  "name": "Board Games",
+  "description": "PLay board games with your friends",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["nagado"],
+  "credits": "Forge, FML, Forgelin - thank you!",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
