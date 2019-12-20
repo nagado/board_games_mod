@@ -1,6 +1,9 @@
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
+import net.minecraft.block.Block
+import net.minecraft.block.material.Material
+import net.minecraft.item.ItemBlock
 import net.minecraft.util.*
 import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
@@ -10,6 +13,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.LogManager
 
 const val MODID = "boardgames"
@@ -41,24 +46,36 @@ object BoardGamesMod{
 
 @Mod.EventBusSubscriber(modid=MODID)
 object EventHandler {
+    private val tableItemBlock = ItemBlock(BlockTable)
+
     @JvmStatic
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
-        event.registry.register(ItemTable)
+        tableItemBlock.registryName = BlockTable.registryName;
+        event.registry.register(tableItemBlock)
+    }
+
+    @JvmStatic
+    @SubscribeEvent
+    fun registerBlocks(event: RegistryEvent.Register<Block>) {
+        event.registry.register(BlockTable)
     }
 
     @JvmStatic
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
-        ModelLoader.setCustomModelResourceLocation(ItemTable, 0, ModelResourceLocation(ItemTable.registryName ?: return, "inventory"))
+        ModelLoader.setCustomModelResourceLocation(tableItemBlock, 0, ModelResourceLocation(BlockTable.registryName ?: return, "inventory"));
     }
 }
 
-object ItemTable : Item() {
+
+object BlockTable : Block(Material.WOOD) {
     init {
         this.registryName = ResourceLocation(MODID, "table")
         this.unlocalizedName = "table"
-        this.creativeTab = CreativeTabs.MISC
-        this.canItemEditBlocks()
+        this.setCreativeTab(CreativeTabs.DECORATIONS)
     }
+
+    @SideOnly(Side.CLIENT)
+    override fun getBlockLayer() = BlockRenderLayer.SOLID
 }

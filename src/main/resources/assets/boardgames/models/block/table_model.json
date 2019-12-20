@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "boardgames:blocks/table_down",
+    "up": "boardgames:blocks/table_up",
+    "north": "boardgames:blocks/table_north",
+    "east": "boardgames:blocks/table_east",
+    "south": "boardgames:blocks/table_south",
+    "west": "boardgames:blocks/table_west",
+    "particle": "boardgames:blocks/table_up"
+  }
+}
