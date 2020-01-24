@@ -29,24 +29,4 @@ object BlockTable : Block(Material.WOOD) {
 
     @SideOnly(Side.CLIENT)
     override fun getBlockLayer() = BlockRenderLayer.SOLID
-
-    override fun onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-        org.lwjgl.input.Mouse.setGrabbed(false) // TODO: Remove once done debugging
-
-        if (world.isRemote && hitY.toInt() == 1) {
-            val cell_x = (hitX * 2.9999).toInt()
-            val cell_z = (hitZ * 2.9999).toInt()
-            logger.info("Coords: $hitX, $hitY, $hitZ")
-            logger.info("Cell: $cell_x, $cell_z")
-
-            if( game_grid[cell_z][cell_x] == null) {
-                game_grid[cell_z][cell_x] = next_sign
-                next_sign = !next_sign
-            }
-
-            for (row in game_grid) {logger.info("${row[0]}, ${row[1]}, ${row[2]}")}
-        }
-
-        return true
-    }
 }

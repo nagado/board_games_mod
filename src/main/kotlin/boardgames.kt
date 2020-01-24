@@ -52,23 +52,29 @@ object BoardGamesMod{
 @Mod.EventBusSubscriber(modid=MODID)
 object EventHandler {
     private val tableItemBlock = ItemBlock(BlockTable)
+    private val tictactoeItemBlock = ItemBlock(BlockTicTacToe)
 
     @JvmStatic
     @SubscribeEvent
     fun registerItems(event: RegistryEvent.Register<Item>) {
-        tableItemBlock.registryName = BlockTable.registryName;
+        tableItemBlock.registryName = BlockTable.registryName
+        tictactoeItemBlock.registryName = BlockTicTacToe.registryName
+
         event.registry.register(tableItemBlock)
+        event.registry.register(tictactoeItemBlock)
     }
 
     @JvmStatic
     @SubscribeEvent
     fun registerBlocks(event: RegistryEvent.Register<Block>) {
         event.registry.register(BlockTable)
+        event.registry.register(BlockTicTacToe)
     }
 
     @JvmStatic
     @SubscribeEvent
     fun registerModels(event: ModelRegistryEvent) {
-        ModelLoader.setCustomModelResourceLocation(tableItemBlock, 0, ModelResourceLocation(BlockTable.registryName ?: return, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(tableItemBlock, 0, ModelResourceLocation(BlockTable.registryName ?: return, "inventory"))
+        ModelLoader.setCustomModelResourceLocation(tictactoeItemBlock, 0, ModelResourceLocation(BlockTicTacToe.registryName ?: return, "inventory"))
     }
 }

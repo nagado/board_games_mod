@@ -1,0 +1,22 @@
+{
+  "parent": "block/thin_block",
+  "textures": {
+    "tictactoe_top": "boardgames:blocks/tictactoe_top",
+    "tictactoe_clear": "boardgames:blocks/tictactoe_clear",
+    "particle": "boardgames:blocks/tictactoe_clear"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 1, 16],
+      "faces": {
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#tictactoe_top"},
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#tictactoe_clear"},
+        "north": { "uv": [0, 15, 16, 16], "texture": "#tictactoe_clear"},
+        "south": { "uv": [0, 15, 16, 16], "texture": "#tictactoe_clear"},
+        "west":  { "uv": [0, 15, 16, 16], "texture": "#tictactoe_clear"},
+        "east":  { "uv": [0, 15, 16, 16], "texture": "#tictactoe_clear"}
+      }
+    }
+  ]
+}
