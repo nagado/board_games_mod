@@ -3,6 +3,11 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemCoal
+import net.minecraft.item.ItemRedstone
+import net.minecraft.item.ItemEgg
+import net.minecraft.item.ItemPickaxe
+import net.minecraft.item.ItemStack
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -13,9 +18,10 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.world.IBlockAccess
+import net.minecraftforge.items.CapabilityItemHandler
 
 
-object BlockTicTacToe : Block(Material.WOOD) {
+object BlockTicTacToe : BlockTileEntity<TileEntityTicTacToe>(Material.WOOD) {
     private val BOUNDING_BOX = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 1.0)
     var game_grid: Array<Array<XO?>> = arrayOf(
             arrayOfNulls(3),
@@ -34,9 +40,11 @@ object BlockTicTacToe : Block(Material.WOOD) {
     override fun getBlockLayer() = BlockRenderLayer.TRANSLUCENT
     
     override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos) = BOUNDING_BOX
+    override fun getTileEntityClass() = TileEntityTicTacToe::class.java
+    override fun createTileEntity(world: World, state: IBlockState) = TileEntityTicTacToe()
     override fun isOpaqueCube(state: IBlockState) = false
     override fun isFullCube(state: IBlockState) = false
-    fun canBlockStay(world: World, pos: BlockPos) = !world.isAirBlock(pos.down())
+    private fun canBlockStay(world: World, pos: BlockPos) = !world.isAirBlock(pos.down())
 
     override fun canPlaceBlockAt(world: World, pos: BlockPos): Boolean {
         return super.canPlaceBlockAt(world, pos) && this.canBlockStay(world, pos)
@@ -53,17 +61,21 @@ object BlockTicTacToe : Block(Material.WOOD) {
         org.lwjgl.input.Mouse.setGrabbed(false) // TODO: Remove once done debugging
 
         if (world.isRemote) {
+            val tile = getTileEntity(world, pos)
+            var itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing) ?: return false
+
             val cell_x = (hitX * 2.9999).toInt()
             val cell_z = (hitZ * 2.9999).toInt()
-            logger.info("Coords: $hitX, $hitY, $hitZ")
-            logger.info("Cell: $cell_x, $cell_z")
+            val slot = cell_x + 3 * cell_z  // Translate to the location in the itemStack.
+            logger.info("Cell: $cell_x, $cell_z, slot: $slot")
 
-            if( game_grid[cell_z][cell_x] == null) {
-                game_grid[cell_z][cell_x] = next_sign
+            if (itemHandler.getStackInSlot(slot).isEmpty) {
+                itemHandler.insertItem(slot, ItemStack(next_sign.item, 1), false)
                 next_sign = !next_sign
+                tile.markDirty()
             }
 
-            for (row in game_grid) {logger.info("${row[0]}, ${row[1]}, ${row[2]}")}
+            for (slot in 0..8) {logger.info("Slot $slot: ${itemHandler.getStackInSlot(slot).unlocalizedName}")}
         }
 
         return true
