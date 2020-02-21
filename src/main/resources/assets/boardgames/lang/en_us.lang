@@ -1,3 +1,7 @@
-# Items
+# Blocks
 tile.table.name=Table
 tile.tictactoe.name=TicTacToe
+
+# Items
+item.tictactoex.name=TicTacToeX
+item.tictactoeo.name=TicTacToeO

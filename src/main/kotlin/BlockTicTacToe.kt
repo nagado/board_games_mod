@@ -3,10 +3,6 @@ import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.ItemCoal
-import net.minecraft.item.ItemRedstone
-import net.minecraft.item.ItemEgg
-import net.minecraft.item.ItemPickaxe
 import net.minecraft.item.ItemStack
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
@@ -23,12 +19,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 
 object BlockTicTacToe : BlockTileEntity<TileEntityTicTacToe>(Material.WOOD) {
     private val BOUNDING_BOX = AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.0625, 1.0)
-    var game_grid: Array<Array<XO?>> = arrayOf(
-            arrayOfNulls(3),
-            arrayOfNulls(3),
-            arrayOfNulls(3)
-    )
-    var next_sign = XO.CROSS
+    private var next_sign = XO.X
 
     init {
         this.registryName = ResourceLocation(MODID, "tictactoe")

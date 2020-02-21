@@ -3,8 +3,8 @@ import net.minecraft.item.ItemCoal
 import net.minecraft.item.ItemRedstone
 
 enum class XO (val item: Item) {
-    CROSS(ItemCoal()),
-    CIRCLE(ItemRedstone());
+    X(ItemX),
+    O(ItemO);
 
-    operator fun not() = if (this == XO.CROSS) XO.CIRCLE else XO.CROSS
+    operator fun not() = if (this == XO.X) XO.O else XO.X
 }
